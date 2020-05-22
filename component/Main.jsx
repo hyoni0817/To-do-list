@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import TodoList from './TodoList';
 let id = 0;//hooks는 렌더링 될때 Main 컴포넌트 자체가 렌더링이 되므로 id가 렌더링 될 때마다 초기화가 되서 id 값이 증가하지 않는다. 그래서 Main 컴포넌트 밖에 둬야 한다.
 
@@ -8,6 +8,7 @@ const Main = () => {
     const [isImportant, setImportant] = useState(false);
     const [contents, setContents] = useState('');
     const [finalWriteDate, setFinalWriteDate] = useState(0);
+    const inputRef = useRef(null);
     
 
     const [list, setList] = useState([]);
@@ -29,11 +30,12 @@ const Main = () => {
                 }
             ]
         )
-        
+    
         setTitle('');
         setEndDate('');
         setContents('');
         setImportant(false);
+        inputRef.current.focus();
     }
 
     const onChangeInputImportant = (e) => {
@@ -43,7 +45,7 @@ const Main = () => {
     return (
         <>
             <form onSubmit={onSubmitForm}>
-                <input name="title" value={title} onChange={(e) => setTitle(e.target.value)} />
+                <input ref={inputRef} name="title" value={title} onChange={(e) => setTitle(e.target.value)} />
                 <input name="endDate" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                 <input type="checkbox" id="important" name="isImportant" checked={isImportant} onChange={onChangeInputImportant}/>
                 <label htmlFor="isImportant">중요</label><br></br>
