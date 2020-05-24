@@ -8,10 +8,10 @@ const Main = () => {
     const [isImportant, setImportant] = useState(false);
     const [contents, setContents] = useState('');
     const [finalWriteDate, setFinalWriteDate] = useState(0);
+    const [list, setList] = useState([]);
     const inputRef = useRef(null);
     
 
-    const [list, setList] = useState([]);
     
     const onSubmitForm = (e) => {
         e.preventDefault();
@@ -42,6 +42,19 @@ const Main = () => {
         setImportant(e.target.checked);       
     }
 
+    const handleUpdate = (id, writeDate, data) => {
+        setList(list.map(info => {
+            if(info.id === id) {
+                return {
+                    id,
+                    writeDate,
+                    ...data,
+                }
+            }
+            return info;
+        }))
+    }
+
     return (
         <>
             <form onSubmit={onSubmitForm}>
@@ -55,7 +68,7 @@ const Main = () => {
             <div>총 할일: {list.length}</div>
             <ul>
                 {list.length === 0 ? null : list.map((v) => {
-                   return <TodoList key={v.id} todoInfo={v} />
+                   return <TodoList key={v.id} todoInfo={v} onUpdate={handleUpdate}/>
                 })}
             </ul>
         </>
